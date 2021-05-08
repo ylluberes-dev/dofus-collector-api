@@ -1,7 +1,9 @@
-package com.ylluberes.dofus_collector_api.domain;
+package com.ylluberes.dofus_collector_api.domain.games;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ylluberes.dofus_collector_api.domain.Mission;
+import com.ylluberes.dofus_collector_api.domain.games.types.GameType;
 import com.ylluberes.dofus_collector_api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,11 +15,10 @@ import java.util.List;
 /***
  * @Author Yasser Lluberes
  */
-
 @AllArgsConstructor
 @Getter
 @Setter
-public class Game {
+public abstract class Game {
 
     @Id
     private int id;

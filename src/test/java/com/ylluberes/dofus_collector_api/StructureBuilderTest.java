@@ -2,6 +2,10 @@ package com.ylluberes.dofus_collector_api;
 
 
 import com.ylluberes.dofus_collector_api.domain.*;
+import com.ylluberes.dofus_collector_api.domain.games.Game;
+import com.ylluberes.dofus_collector_api.domain.games.types.GameType;
+import com.ylluberes.dofus_collector_api.exceptions.InvalidGameTypeException;
+import com.ylluberes.dofus_collector_api.service.impl.GameServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -29,10 +33,13 @@ class StructureBuilderTest {
 		missions.add(mission);
 
 		List<Game> games = new ArrayList<>();
-		Game dofus_touch = new Game(1,"Dofus-touch","2.45",missions);
-		Game dofus_pc = new Game(2," Dofus-PC","2.0",missions);
-		games.add(dofus_touch);
-		games.add(dofus_pc);
+		try {
+			Game dofusTouch = new GameServiceImpl().buildNewGame(GameType.DOFUS_TOUCH);
+			dofusTouch.setMissions(missions);
+			games.add(dofusTouch);
+		}catch (InvalidGameTypeException ex){
+			System.out.println("Unexpected error occurred trying to build a new game: "+ex);
+		}
 
 		User user = new User(1,"ylluberes","12345",games);
 

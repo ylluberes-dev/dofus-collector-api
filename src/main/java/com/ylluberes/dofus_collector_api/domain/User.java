@@ -1,12 +1,11 @@
 package com.ylluberes.dofus_collector_api.domain;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ylluberes.dofus_collector_api.domain.games.Game;
 import com.ylluberes.dofus_collector_api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
