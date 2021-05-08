@@ -1,4 +1,4 @@
-package com.ylluberes.dofuscollectorapi;
+package com.ylluberes.dofus_collector_api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
