@@ -5,8 +5,6 @@ import com.ylluberes.dofus_collector_api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.Id;
 
 
 /***
@@ -17,8 +15,7 @@ import org.springframework.data.annotation.Id;
 @Setter
 public class Monster {
 
-    @Id
-    private int id;
+
     private String name;
     private boolean archMonster;
     private boolean captured;

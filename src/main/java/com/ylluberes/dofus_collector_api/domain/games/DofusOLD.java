@@ -10,8 +10,8 @@ import java.util.List;
 public class DofusOLD extends Game{
 
     @Builder
-    public DofusOLD (int id, String name, String version, List<Mission> missions){
-        super(id,name,version,missions);
+    public DofusOLD (String name, String version, List<Mission> missions){
+        super(name,version,missions);
     }
 
 }

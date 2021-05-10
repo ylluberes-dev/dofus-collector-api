@@ -20,16 +20,16 @@ class StructureBuilderTest {
 	void buildDocumentStructure () {
 		List<Monster> monsters = new ArrayList<>();
 		for (int i =0; i <= 2; i++) {
-			Monster monster = new Monster(1,"Jabalí de las llanuras",false,false,0,"None","/Path/to/some/image");
+			Monster monster = new Monster("Jabalí de las llanuras",false,false,0,"None","/Path/to/some/image");
 			monsters.add(monster);
 		}
 		List<Stage> stages = new ArrayList<>();
 		for (int i = 0; i <= 2; i++){
-			Stage stage = new Stage(0,"Etapa I",true,"None", monsters);
+			Stage stage = new Stage("Etapa I",true,"None", monsters);
 			stages.add(stage);
 		}
 		List<Mission> missions = new ArrayList<>();
-		Mission mission = new Mission(1,"Eternal Harvest",false,"Mission I",stages);
+		Mission mission = new Mission("Eternal Harvest",false,"Mission I",stages);
 		missions.add(mission);
 
 		List<Game> games = new ArrayList<>();

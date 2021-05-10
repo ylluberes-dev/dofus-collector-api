@@ -10,7 +10,7 @@ import java.util.List;
 public class DofusPC extends Game{
 
     @Builder
-    public DofusPC (int id, String name, String version, List<Mission> missions){
-        super(id,name,version,missions);
+    public DofusPC (String name, String version, List<Mission> missions){
+        super(name,version,missions);
     }
 }

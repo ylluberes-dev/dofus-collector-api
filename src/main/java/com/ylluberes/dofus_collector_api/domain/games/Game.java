@@ -3,12 +3,10 @@ package com.ylluberes.dofus_collector_api.domain.games;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ylluberes.dofus_collector_api.domain.Mission;
-import com.ylluberes.dofus_collector_api.domain.games.types.GameType;
 import com.ylluberes.dofus_collector_api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -20,8 +18,6 @@ import java.util.List;
 @Setter
 public abstract class Game {
 
-    @Id
-    private int id;
     private String name;
     private String version;
     private List<Mission> missions;

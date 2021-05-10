@@ -22,7 +22,7 @@ import java.util.List;
 public class User {
 
     @Id
-    private int id;
+    private int _id;
     private String username;
     private String password;
     private List<Game> game;

@@ -4,8 +4,6 @@ import com.ylluberes.dofus_collector_api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -18,8 +16,6 @@ import java.util.List;
 @Setter
 public class Mission {
 
-    @Id
-    private int id;
     private String name;
     private boolean complete;
     private String details;
