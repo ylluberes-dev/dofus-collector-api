@@ -9,23 +9,28 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.List;
 
 /***
  * @Author Yasser Lluberes
  */
 
-@Document(collation = "users")
+@Document(collection = "Users")
 @AllArgsConstructor
 @Getter
 @Setter
-public class User {
+public class Users implements Serializable {
 
     @Id
-    private int _id;
+    private String _id;
     private String username;
     private String password;
     private List<Game> game;
+
+    public Users () {
+
+    }
 
     @Override
     public String toString() {
