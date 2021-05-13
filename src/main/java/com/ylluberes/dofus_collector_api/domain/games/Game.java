@@ -16,11 +16,15 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public abstract class Game {
+public  class Game {
 
     private String name;
     private String version;
     private List<Mission> missions;
+
+    public Game(){
+
+    }
 
     @Override
     public String toString() {
