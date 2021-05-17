@@ -44,15 +44,12 @@ public class GameController {
             user = userService.findById(userId);
             if (user != null) {
                 List<Game> gameList = user.getGame();
-                int index = 0;
                 for (Game game : gameList) {
                     if (game.getGameType() == gameType) {
                         game.getMissions().add(gameService.addNewMission(gameType, missionType));
-                        gameList.set(index, game);
                         userService.saveOrUpdate(user);
                         return new ResponseEntity<>("Mission added successfully", HttpStatus.OK);
                     }
-                    index++;
                 }
             } else {
                 return new ResponseEntity<>("User dos not exists", HttpStatus.NOT_FOUND);
