@@ -1,19 +1,23 @@
 package com.ylluberes.dofus_collector_api;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ylluberes.dofus_collector_api.dao.GameContentDao;
 import com.ylluberes.dofus_collector_api.dao.UserDao;
+import com.ylluberes.dofus_collector_api.domain.Game;
 import com.ylluberes.dofus_collector_api.domain.Mission;
+import com.ylluberes.dofus_collector_api.domain.Users;
 import com.ylluberes.dofus_collector_api.domain.types.GameType;
 import com.ylluberes.dofus_collector_api.domain.types.MissionType;
-import com.ylluberes.dofus_collector_api.util.Utils;
+import com.ylluberes.dofus_collector_api.service.GameService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 
 @SpringBootTest
@@ -21,6 +25,9 @@ class AppTest {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private GameService gameService;
 
 
     @Autowired
@@ -39,109 +46,26 @@ class AppTest {
     }
 
     @Test
-    public void testLoadMonster() {
-       /* MonsterMapper monsterMapper = new MonsterMapper();
-        try {
-            List<String[]> csvLines = gameContentDao.retrieveCsvLinesOf(GameType.DOFUS_TOUCH, Origin.MONSTER);
-            List<Monster> monsters = monsterMapper.map(csvLines);
-            List<Monster> archMonster = monsters.stream().filter(x -> x.isArchMonster()).collect(Collectors.toList());
-            System.out.println("***** Output *****");
-            System.out.println("Listing all dofus-touch archmonsters...");
-            archMonster.forEach(x -> {
-                System.out.println("Archmonster: " + x.getName());
-            });
-            System.out.println("***** Output *****");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
-    }
-
-
-    @Test
-    public void testLoadMissions() {
-       /* MissionMapper missionMapper = new MissionMapper();
-        try {
-            List<String[]> csvLines = gameContentDao.retrieveCsvLinesOf(GameType.DOFUS_TOUCH, Origin.MISSION);
-            List<Mission> missionList = missionMapper.map(csvLines);
-            System.out.println("***** Output *****");
-            missionList.forEach(x -> {
-                System.out.println("Mission: " + x.getName());
-            });
-            System.out.println("***** Output *****");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        */
-    }
-
-
-    @Test
-    public void testEternalHarvest() {
-      /*  List<Mission> missions = new ArrayList<>();
-
-        //Creating mission
-        Mission eternalHarvest = new Mission();
-        eternalHarvest.setName("La Cosecha Eterna");
-        eternalHarvest.setDetails("Captura todos los monstros del mundo de los 12");
-        eternalHarvest.setComplete(false);
-
-        //Collecting all monsters of eternalHarvest
-        List<Monster> monsters = null;
-        try {
-            monsters = new MonsterMapper().map(gameContentDao.retrieveCsvLinesOf(GameType.DOFUS_TOUCH, Origin.MONSTER));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        List<Stage> stages = new ArrayList<>();
-        //Creating Stages<T>
-        for (int stageNo = 1; stageNo <= 35; stageNo++) {
-            Stage currentStage = new Stage();
-            currentStage.setName("Etapa: " + stageNo);
-            currentStage.setDetails("0% completado");
-            currentStage.setComplete(false);
-
-            List<Monster> currentMonsters = new ArrayList<>();
-            for (Monster monster : monsters) {
-                if (monster.getStage() == stageNo) {
-                    currentMonsters.add(monster);
+    public void testAdd5000Users () {
+        Instant now = Instant.now();
+        for (int i = 1; i <= 5000; i++) {
+            Users user = new Users();
+            user.setUsername("User "+i);
+            user.setPassword(UUID.randomUUID().toString());
+            List<Game> gameList = new ArrayList<>();
+            for (int g = 1; g <= 3; g++){
+                try {
+                    gameList.add(gameService.addNewGame(GameType.DOFUS_TOUCH));
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
-            currentStage.setSteps(currentMonsters);
-            stages.add(currentStage);
+            user.setGame(gameList);
+            userDao.save(user);
         }
-        eternalHarvest.setStages(stages);
-        missions.add(eternalHarvest);
-        System.out.println(missions);
+        Instant after = Instant.now();
 
-        System.out.println("Stop");*/
-
-
-    }
-
-    @Test
-    public void testFromJson() {
-        final String path = "C:/Users/ylluberes/IdeaProjects/dofus-collector-api/src/test/resources/dofus-touch/missions/cosecha-eterna.json";
-        final ObjectMapper mapper = new ObjectMapper();
-        String eternalHarvestOrigin = null;
-        try {
-            eternalHarvestOrigin = Utils.readFile(path, StandardCharsets.UTF_8);
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
-        Mission eternalHarvest = null;
-        try {
-            eternalHarvest = mapper.readValue(eternalHarvestOrigin, Mission.class);
-        }catch (JsonProcessingException ex) {
-            ex.printStackTrace();
-        }
-
-     /*   Gson gson = new Gson();
-        Mission eternalHarvestGson = gson.fromJson(eternalHarvestOrigin,Mission.class);
-        System.out.println("Hi there");*/
-
-        System.out.println("");
+        System.out.println("Total time execution: "+ Duration.between(now,after));
 
     }
 

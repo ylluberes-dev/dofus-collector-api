@@ -6,7 +6,6 @@ import com.ylluberes.dofus_collector_api.domain.types.Action;
 import com.ylluberes.dofus_collector_api.domain.types.MissionType;
 import com.ylluberes.dofus_collector_api.service.GameService;
 import com.ylluberes.dofus_collector_api.service.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,7 @@ public class GameController {
 
     }
 
-    @PutMapping("/addNewMission/{userId}/{gameType}/{missionType}")
+    @PatchMapping("/addNewMission/{userId}/{gameType}/{missionType}")
     public ResponseEntity<String> addNewMission(@PathVariable String userId,
                                                 @PathVariable GameType gameType,
                                                 @PathVariable MissionType missionType) {
@@ -64,7 +63,7 @@ public class GameController {
         return new ResponseEntity<>("Game not Found ", HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/addNewGame/{userId}/{gameType}")
+    @PatchMapping("/addNewGame/{userId}/{gameType}")
     public ResponseEntity<String> addNewGame(@PathVariable String userId,
                                              @PathVariable GameType gameType) {
         Users user = null;
@@ -94,41 +93,46 @@ public class GameController {
         return new ResponseEntity<>("Game successfully added ", HttpStatus.OK);
     }
 
-    @PutMapping("/updateMonster/{userId}/{monsterId}/{action}")
+    @PatchMapping("/updateMonster/{userId}/{monsterId}/{action}")
     public ResponseEntity<String> markMonsterAsCaptured(@PathVariable String userId,
                                                         @PathVariable String monsterId,
                                                         @PathVariable Action action) {
         Users user;
         try {
             user = userService.findById(userId);
-            if (user != null) {
-                for (Game game : user.getGame()) {
-                    if (game.getGameType() == GameType.DOFUS_TOUCH) {
-                        for (Mission mission : game.getMissions()) {
-                            if (mission.getMissionType() == MissionType.ETERNAL_HARVEST) {
-                                for (Stage stage : mission.getStages()) {
-                                    for (Monster monster : stage.getSteps()) {
-                                        if (monster.get_id().equals(monsterId)) {
-                                            boolean status = monster.isCaptured();
-                                            switch (action) {
-                                                case CHECK:
-                                                    if (!status)
-                                                        monster.setCaptured(true);
-                                                    break;
-                                                case UNCHECK:
-                                                    if (status)
-                                                        monster.setCaptured(false);
-                                                    break;
-                                                case ADD:
-                                                    monster.setTimesCaptured(monster.getTimesCaptured() + 1);
-                                                    break;
-                                                case REMOVE:
-                                                    monster.setTimesCaptured(monster.getTimesCaptured() - 1);
-                                                    break;
+            List<Game> gameList = user.getGame();
+            if (gameList != null && gameList.size() > 0) {
+                if (user != null) {
+                    for (Game game : user.getGame()) {
+                        if (game.getGameType() == GameType.DOFUS_TOUCH) {
+                            for (Mission mission : game.getMissions()) {
+                                if (mission.getMissionType() == MissionType.ETERNAL_HARVEST) {
+                                    for (Stage stage : mission.getStages()) {
+                                        for (Monster monster : stage.getSteps()) {
+                                            if (monster.get_id().equals(monsterId)) {
+                                                boolean status = monster.isCaptured();
+                                                switch (action) {
+                                                    case CHECK:
+                                                        if (!status)
+                                                            monster.setCaptured(true);
+                                                        break;
+                                                    case UNCHECK:
+                                                        if (status)
+                                                            monster.setCaptured(false);
+                                                        break;
+                                                    case ADD:
+                                                        if (status)
+                                                            monster.setTimesCaptured(monster.getTimesCaptured() + 1);
+                                                        break;
+                                                    case REMOVE:
+                                                        if (status)
+                                                            monster.setTimesCaptured(monster.getTimesCaptured() - 1);
+                                                        break;
 
+                                                }
+                                                userService.saveOrUpdate(user);
+                                                return new ResponseEntity<>("Monster updated successfully", HttpStatus.OK);
                                             }
-                                            userService.saveOrUpdate(user);
-                                            return new ResponseEntity<>("Monster updated successfully", HttpStatus.OK);
                                         }
                                     }
                                 }
