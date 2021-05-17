@@ -14,13 +14,17 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Stage {
+public class Stage{
 
 
     private String name;
     private boolean complete;
     private String details;
-    private List<Monster> monsters;
+    private List<Monster> steps;
+
+    public Stage(){
+
+    }
 
     @Override
     public String toString() {

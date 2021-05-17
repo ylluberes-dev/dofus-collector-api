@@ -35,4 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
-*.properties
+
+
+#Origin source files
+.properties
+.csv

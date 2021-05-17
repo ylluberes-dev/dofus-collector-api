@@ -5,6 +5,7 @@ import com.ylluberes.dofus_collector_api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.UUID;
 
 
 /***
@@ -15,13 +16,23 @@ import lombok.Setter;
 @Setter
 public class Monster {
 
-
+    private String _id = UUID.randomUUID().toString();
     private String name;
     private boolean archMonster;
     private boolean captured;
     private int timesCaptured;
+    private boolean bossMonster;
     private String details;
     private String itemIconPath;
+    private String rangeLevel;
+    private String zone;
+    private String subZone;
+    private int stage;
+   /* private String monsterType;*/
+
+    public Monster () {
+
+    }
 
     @Override
     public String toString() {

@@ -1,8 +1,5 @@
-package com.ylluberes.dofus_collector_api.domain.games;
-
-
+package com.ylluberes.dofus_collector_api.domain;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ylluberes.dofus_collector_api.domain.Mission;
 import com.ylluberes.dofus_collector_api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,16 +10,19 @@ import java.util.List;
 /***
  * @Author Yasser Lluberes
  */
+
 @AllArgsConstructor
 @Getter
 @Setter
-public  class Game {
+public class Stage<T> {
+
 
     private String name;
-    private String version;
-    private List<Mission> missions;
+    private boolean complete;
+    private String details;
+    private List<T> steps; //Genercis Step for any type of mission
 
-    public Game(){
+    public Stage(){
 
     }
 
@@ -34,8 +34,6 @@ public  class Game {
             throw new RuntimeException("An Exception occurred during parsing to json String",ex);
         }
     }
-
-
 
 
 }
