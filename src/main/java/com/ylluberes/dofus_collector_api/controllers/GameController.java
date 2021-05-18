@@ -4,6 +4,7 @@ import com.ylluberes.dofus_collector_api.domain.*;
 import com.ylluberes.dofus_collector_api.domain.types.GameType;
 import com.ylluberes.dofus_collector_api.domain.types.Action;
 import com.ylluberes.dofus_collector_api.domain.types.MissionType;
+import com.ylluberes.dofus_collector_api.dto.responses.Response;
 import com.ylluberes.dofus_collector_api.service.GameService;
 import com.ylluberes.dofus_collector_api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -36,10 +39,11 @@ public class GameController {
     }
 
     @PatchMapping("/addNewMission/{userId}/{gameType}/{missionType}")
-    public ResponseEntity<String> addNewMission(@PathVariable String userId,
-                                                @PathVariable GameType gameType,
-                                                @PathVariable MissionType missionType) {
+    public ResponseEntity<Response<MissionType>> addNewMission(@PathVariable String userId,
+                                                               @PathVariable GameType gameType,
+                                                               @PathVariable MissionType missionType) {
         Users user;
+        Response<MissionType> response = new Response<>();
         try {
             user = userService.findById(userId);
             if (user != null) {
@@ -48,22 +52,39 @@ public class GameController {
                     if (game.getGameType() == gameType) {
                         game.getMissions().add(gameService.addNewMission(gameType, missionType));
                         userService.saveOrUpdate(user);
-                        return new ResponseEntity<>("Mission added successfully", HttpStatus.OK);
+                        response.setData(missionType);
+                        response.setMessage("Mission added successfully");
+                        response.setSuccess(true);
+                        response.setServerStatus(HttpStatus.OK);
+                        break;
                     }
                 }
             } else {
-                return new ResponseEntity<>("User dos not exists", HttpStatus.NOT_FOUND);
+                response.setData(missionType);
+                response.setMessage("The user does not exists");
+                response.setSuccess(false);
+                response.setData(missionType);
+                response.setServerStatus(HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("Unexpected error occurred adding new Mission ", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.setMessage("Unexpected error");
+            response.setSuccess(false);
+            response.setData(missionType);
+            response.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("Game not Found ", HttpStatus.NOT_FOUND);
+        response.setMessage("The user does not have the game [" + gameType + "]");
+        response.setSuccess(false);
+        response.setData(missionType);
+        response.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return new ResponseEntity<>(response, response.getServerStatus());
     }
 
     @PatchMapping("/addNewGame/{userId}/{gameType}")
-    public ResponseEntity<String> addNewGame(@PathVariable String userId,
-                                             @PathVariable GameType gameType) {
+    public ResponseEntity<Response<Game>> addNewGame(@PathVariable String userId,
+                                                     @PathVariable GameType gameType) {
         Users user = null;
+        Response<Game> response = new Response<>();
         try {
             user = userService.findById(userId);
             if (user != null) {
@@ -71,64 +92,86 @@ public class GameController {
                 if (user.getGame() != null && user.getGame().size() > 0) {
                     for (Game game : gameList) {
                         if (gameType == game.getGameType()) {
-                            return new ResponseEntity<>
-                                    ("User already have the game [" + gameType.name() + "] ",
-                                            HttpStatus.CONFLICT);
+                            response.setMessage("User already have the game [" + gameType.name() + "]");
+                            response.setSuccess(false);
+                            response.setData(game);
+                            response.setServerStatus(HttpStatus.CONFLICT);
+                            break;
                         }
                     }
                 }
                 Game newGame = gameService.addNewGame(gameType);
                 user.getGame().add(newGame);
                 userService.saveOrUpdate(user);
+
+                response.setMessage("Game successfully added ");
+                response.setSuccess(true);
+                response.setData(newGame);
+                response.setServerStatus(HttpStatus.OK);
             } else {
-                return new ResponseEntity<>("User dos not exists", HttpStatus.NOT_FOUND);
+                response.setMessage("The user does not exists");
+                response.setSuccess(false);
+                response.setData(null);
+                response.setServerStatus(HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("Unexpected error occurred adding new Mission ", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.setMessage("Unexpected error");
+            response.setSuccess(false);
+            response.setData(null);
+            response.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>("Game successfully added ", HttpStatus.OK);
+        return new ResponseEntity<>(response, response.getServerStatus());
     }
 
     @PatchMapping("/updateMonster/{userId}/{monsterId}/{action}")
-    public ResponseEntity<String> markMonsterAsCaptured(@PathVariable String userId,
-                                                        @PathVariable String monsterId,
-                                                        @PathVariable Action action) {
+    public ResponseEntity<Response<Monster>> markMonsterAsCaptured(@PathVariable String userId,
+                                                                   @PathVariable String monsterId,
+                                                                   @PathVariable Action action) {
         Users user;
+        Response<Monster> response = new Response<>();
         try {
-            user = userService.findById(userId);
-            List<Game> gameList = user.getGame();
-            if (gameList != null && gameList.size() > 0) {
-                if (user != null) {
-                    for (Game game : user.getGame()) {
-                        if (game.getGameType() == GameType.DOFUS_TOUCH) {
-                            for (Mission mission : game.getMissions()) {
-                                if (mission.getMissionType() == MissionType.ETERNAL_HARVEST) {
-                                    for (Stage stage : mission.getStages()) {
-                                        for (Monster monster : stage.getSteps()) {
-                                            if (monster.get_id().equals(monsterId)) {
-                                                boolean status = monster.isCaptured();
-                                                switch (action) {
-                                                    case CHECK:
-                                                        if (!status)
-                                                            monster.setCaptured(true);
-                                                        break;
-                                                    case UNCHECK:
-                                                        if (status)
-                                                            monster.setCaptured(false);
-                                                        break;
-                                                    case ADD:
-                                                        if (status)
-                                                            monster.setTimesCaptured(monster.getTimesCaptured() + 1);
-                                                        break;
-                                                    case REMOVE:
-                                                        if (status)
-                                                            monster.setTimesCaptured(monster.getTimesCaptured() - 1);
-                                                        break;
 
+            user = userService.findById(userId);
+            if (user != null) {
+                List<Game> gameList = user.getGame();
+                if (gameList != null && gameList.size() > 0) {
+                    if (user != null) {
+                        for (Game game : user.getGame()) {
+                            if (game.getGameType() == GameType.DOFUS_TOUCH) {
+                                for (Mission mission : game.getMissions()) {
+                                    if (mission.getMissionType() == MissionType.ETERNAL_HARVEST) {
+                                        for (Stage stage : mission.getStages()) {
+                                            for (Monster monster : stage.getSteps()) {
+                                                if (monster.get_id().equals(monsterId)) {
+                                                    boolean status = monster.isCaptured();
+                                                    switch (action) {
+                                                        case CHECK:
+                                                            if (!status)
+                                                                monster.setCaptured(true);
+                                                            break;
+                                                        case UNCHECK:
+                                                            if (status)
+                                                                monster.setCaptured(false);
+                                                            break;
+                                                        case ADD:
+                                                            if (status)
+                                                                monster.setTimesCaptured(monster.getTimesCaptured() + 1);
+                                                            break;
+                                                        case REMOVE:
+                                                            if (status)
+                                                                if (monster.getTimesCaptured() < 1)
+                                                                    monster.setTimesCaptured(monster.getTimesCaptured() - 1);
+                                                            break;
+
+                                                    }
+                                                    userService.saveOrUpdate(user);
+                                                    response.setMessage("Monster updated successfully");
+                                                    response.setSuccess(true);
+                                                    response.setData(monster);
+                                                    response.setServerStatus(HttpStatus.OK);
+                                                    break;
                                                 }
-                                                userService.saveOrUpdate(user);
-                                                return new ResponseEntity<>("Monster updated successfully", HttpStatus.OK);
                                             }
                                         }
                                     }
@@ -138,11 +181,62 @@ public class GameController {
                     }
                 }
             } else {
-                return new ResponseEntity<>("User dos not exists", HttpStatus.NOT_FOUND);
+                response.setMessage("The user does not exists");
+                response.setSuccess(false);
+                response.setData(null);
+                response.setServerStatus(HttpStatus.NOT_FOUND);
             }
         } catch (Exception ex) {
-            return new ResponseEntity<>("Unexpected error occurred adding new Mission ", HttpStatus.INTERNAL_SERVER_ERROR);
+            response.setMessage("Unexpected error");
+            response.setSuccess(false);
+            response.setData(null);
+            response.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
+        return new ResponseEntity<>(response, response.getServerStatus());
+    }
+
+    @GetMapping("/exportDuplicates/{userId}")
+    public ResponseEntity<Response<List<Monster>>> exportDuplicate(@PathVariable String userId) {
+        Users user;
+        Response<List<Monster>> response = new Response<>();
+        try {
+            user = userService.findById(userId);
+            if (user != null) {
+                List<Game> gameList = user.getGame();
+                if (gameList != null && gameList.size() > 0) {
+                    for (Game game : gameList) {
+                        if (game.getGameType() == GameType.DOFUS_TOUCH) {
+                            for (Mission mission : game.getMissions()) {
+                                if (mission.getMissionType() == MissionType.ETERNAL_HARVEST) {
+                                    for (Stage stage : mission.getStages()) {
+                                        List<Monster> duplicatedMonster = stage
+                                                .getSteps()
+                                                .stream()
+                                                .filter(x -> x.getTimesCaptured() > 1)
+                                                .collect(Collectors.toList());
+                                        response.setMessage("Monster updated successfully");
+                                        response.setSuccess(true);
+                                        response.setData(duplicatedMonster);
+                                        response.setServerStatus(HttpStatus.OK);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                response.setMessage("The user does not exists");
+                response.setSuccess(false);
+                response.setData(null);
+                response.setServerStatus(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            response.setMessage("Unexpected error");
+            response.setSuccess(false);
+            response.setData(null);
+            response.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, response.getServerStatus());
     }
 }
