@@ -28,8 +28,21 @@ public class GameController {
     private UserService userService;
 
     @GetMapping("/showGames")
-    public ResponseEntity<GameType[]> showGames() {
-        return new ResponseEntity<>(GameType.values(), HttpStatus.OK);
+    public ResponseEntity<Response<List<Game>>> showGames() {
+        List<Game> gameList = new ArrayList<>();
+        for(GameType gameType : GameType.values()){
+            Game game = new Game();
+            game.setGameType(gameType);
+            game.setVersion("2.0");
+            game.setName(gameType.name());
+            gameList.add(game);
+        }
+        Response<List<Game>> response = new Response<>();
+        response.setMessage("Available game list");
+        response.setSuccess(true);
+        response.setServerStatus(HttpStatus.OK);
+        response.setData(gameList);
+        return new ResponseEntity<>(response,response.getServerStatus());
     }
 
     @GetMapping("/showMissions")
