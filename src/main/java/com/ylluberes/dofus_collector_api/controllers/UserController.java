@@ -1,55 +1,46 @@
 package com.ylluberes.dofus_collector_api.controllers;
 
-import com.ylluberes.dofus_collector_api.domain.Users;
+import com.ylluberes.dofus_collector_api.domain.User;
+import com.ylluberes.dofus_collector_api.dto.responses.GenericResponse;
 import com.ylluberes.dofus_collector_api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/dofus-collector/api/v1/users")
+/**
+ * TODO: Handled exception ?
+ * TODO: log error | log input request
+ */
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/createUser")
-    public ResponseEntity<String> createUser (@RequestBody  Users user) {
-
-        try{
-            this.userService.saveOrUpdate(user);
-        }catch (Exception ex){
-            return new ResponseEntity<>("User cannot be created",HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>("User successfully created",HttpStatus.OK);
+    @PostMapping("/create")
+    public ResponseEntity<GenericResponse> createUser(@RequestBody User user) {
+        GenericResponse<User> genericResponse = userService.saveOrUpdate(user);
+        return new ResponseEntity<>(genericResponse, genericResponse.getServerStatus());
     }
 
-    @GetMapping("/allUsers")
-    public ResponseEntity<List<Users>> getAllUsers () {
-        List<Users> userList = null;
-        try{
-            userList = userService.getAllUsers();
-        }catch (Exception e) {
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(userList,HttpStatus.OK);
+    @GetMapping("/all")
+    public ResponseEntity<GenericResponse> getAllUsers() {
+        GenericResponse<List<User>> genericResponse = userService.getAllUsers();
+        return new ResponseEntity<>(genericResponse, genericResponse.getServerStatus());
     }
 
-    @GetMapping("/findById/{id}")
-    public ResponseEntity<Users> findById (@PathVariable String id){
-        Users user = null;
-        try{
-            user = userService.findById(id);
-        }catch (Exception ex) {
-            return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        if(user == null)
-           return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-        else
-            return new ResponseEntity<>(user,HttpStatus.OK);
+    @GetMapping("/findById/{userId}")
+    public ResponseEntity<GenericResponse> findById(@PathVariable String userId) {
+        GenericResponse genericResponse = userService.findById(userId);
+        return new ResponseEntity<>(genericResponse, genericResponse.getServerStatus());
+    }
 
+    @PatchMapping("/attachMission/{userId}")
+    public ResponseEntity<GenericResponse> attachMission (@PathVariable String userId){
+        GenericResponse response = userService.attachMission(userId);
+        return new ResponseEntity<>(response,response.getServerStatus());
     }
 
 

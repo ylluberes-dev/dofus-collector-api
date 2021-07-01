@@ -11,5 +11,4 @@ public class DofusCollectorApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DofusCollectorApiApplication.class, args);
 	}
-
 }

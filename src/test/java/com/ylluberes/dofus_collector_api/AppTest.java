@@ -1,13 +1,10 @@
 package com.ylluberes.dofus_collector_api;
 
 
-import com.ylluberes.dofus_collector_api.dao.GameContentDao;
 import com.ylluberes.dofus_collector_api.dao.UserDao;
 import com.ylluberes.dofus_collector_api.domain.Game;
 import com.ylluberes.dofus_collector_api.domain.Mission;
-import com.ylluberes.dofus_collector_api.domain.Users;
-import com.ylluberes.dofus_collector_api.domain.types.GameType;
-import com.ylluberes.dofus_collector_api.domain.types.MissionType;
+import com.ylluberes.dofus_collector_api.domain.User;
 import com.ylluberes.dofus_collector_api.service.GameService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +46,7 @@ class AppTest {
     public void testAdd5000Users () {
         Instant now = Instant.now();
         for (int i = 1; i <= 5000; i++) {
-            Users user = new Users();
+            User user = new User();
             user.setUsername("User "+i);
             user.setPassword(UUID.randomUUID().toString());
             List<Game> gameList = new ArrayList<>();

@@ -2,7 +2,6 @@ package com.ylluberes.dofus_collector_api.domain;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ylluberes.dofus_collector_api.domain.types.GameType;
 import com.ylluberes.dofus_collector_api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,8 +19,7 @@ public  class Game {
 
     private String name;
     private String version;
-    private GameType gameType;
-    private List<Mission> missions;
+    private Mission mission;
 
     public Game(){
 

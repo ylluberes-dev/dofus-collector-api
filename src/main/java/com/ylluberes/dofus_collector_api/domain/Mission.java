@@ -1,6 +1,5 @@
 package com.ylluberes.dofus_collector_api.domain;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ylluberes.dofus_collector_api.domain.types.MissionType;
 import com.ylluberes.dofus_collector_api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +20,6 @@ public class Mission {
     private boolean complete;
     private String details;
     private List<Stage> stages;
-    private MissionType missionType;
 
     public Mission () {
 

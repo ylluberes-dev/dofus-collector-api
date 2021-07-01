@@ -19,16 +19,16 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Users implements Serializable {
+public class User {
 
     @Id
     private String _id;
     private String username;
-    //private String email;
+    private String email;
     private String password;
-    private List<Game> game;
+    private Game game;
 
-    public Users () {
+    public User() {
 
     }
 

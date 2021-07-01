@@ -28,7 +28,6 @@ public class Monster {
     private String zone;
     private String subZone;
     private int stage;
-   /* private String monsterType;*/
 
     public Monster () {
 

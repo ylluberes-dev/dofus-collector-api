@@ -8,11 +8,11 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class Response<T> implements Serializable {
+public class GenericResponse<T> implements Serializable {
 
-    private T data;
     private String message;
     private boolean success;
     private HttpStatus serverStatus;
+    private T data;
 
 }
