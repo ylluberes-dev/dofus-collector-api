@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
             List<User> userList = userDao.findAll();
             genericResponse.setData(userList);
             genericResponse.setSuccess(true);
-            genericResponse.setMessage("User list");
+            genericResponse.setMessage(userList.size() > 0 ? "User list" : "0 users in the database");
             genericResponse.setServerStatus(HttpStatus.OK);
         } catch (Exception e) {
             genericResponse.setData(null);
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
         } catch (Exception ex) {
             response.setData(null);
             response.setSuccess(false);
-            response.setMessage("Unexpected error trying to retrieve user with user id " + userId + " " + ex.getMessage());
+            response.setMessage("Unexpected error trying to attach mission");
             response.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return response;

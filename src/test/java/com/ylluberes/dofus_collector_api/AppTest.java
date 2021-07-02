@@ -5,7 +5,7 @@ import com.ylluberes.dofus_collector_api.dao.UserDao;
 import com.ylluberes.dofus_collector_api.domain.Game;
 import com.ylluberes.dofus_collector_api.domain.Mission;
 import com.ylluberes.dofus_collector_api.domain.User;
-import com.ylluberes.dofus_collector_api.service.GameService;
+import com.ylluberes.dofus_collector_api.loaders.MissionLoader;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,13 +22,6 @@ class AppTest {
 
     @Autowired
     private UserDao userDao;
-
-    @Autowired
-    private GameService gameService;
-
-
-    @Autowired
-    private GameContentDao gameContentDao;
 
     @Test
     public void testFindAllUsers() {
@@ -52,13 +45,13 @@ class AppTest {
             List<Game> gameList = new ArrayList<>();
             for (int g = 1; g <= 3; g++){
                 try {
-                    gameList.add(gameService.addNewGame(GameType.DOFUS_TOUCH));
+                  //  gameList.add(gameService.addNewGame(GameType.DOFUS_TOUCH));
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             }
-            user.setGame(gameList);
-            userDao.save(user);
+           // user.setGame(gameList);
+            //userDao.save(user);
         }
         Instant after = Instant.now();
 
@@ -68,13 +61,14 @@ class AppTest {
 
     @Test
     public void testLoadMission (){
-        Mission eternalHarvest = null;
-        try{
-           eternalHarvest = gameContentDao.map(GameType.DOFUS_TOUCH, MissionType.ETERNAL_HARVEST);
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
-        System.out.println(eternalHarvest);
+       try {
+           Mission mission = MissionLoader.getInstance().getMission();
+           System.out.println("Mission: ");
+           System.out.println();
+           System.out.println(mission);
+       }catch (Exception ex){
+           System.out.println("Error while loading mission: "+ex);
+       }
     }
 
 

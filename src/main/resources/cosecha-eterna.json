@@ -6,7 +6,7 @@
     {
       "name":"Etapa: 1",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Ratón Gris",
@@ -273,7 +273,7 @@
     {
       "name":"Etapa: 2",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Tofu Enfermo",
@@ -540,7 +540,7 @@
     {
       "name":"Etapa: 3",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Nozdekoko",
@@ -807,7 +807,7 @@
     {
       "name":"Etapa: 4",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Colmillo Blando",
@@ -1074,7 +1074,7 @@
     {
       "name":"Etapa: 5",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Rosa Oscura",
@@ -1328,7 +1328,7 @@
     {
       "name":"Etapa: 6",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abrakno ",
@@ -1595,7 +1595,7 @@
     {
       "name":"Etapa: 7",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abub ",
@@ -1862,7 +1862,7 @@
     {
       "name":"Etapa: 8",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abraknido Venerable ",
@@ -2129,7 +2129,7 @@
     {
       "name":"Etapa: 9",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Crujibola Pulío",
@@ -2396,7 +2396,7 @@
     {
       "name":"Etapa: 10",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Almejillón",
@@ -2663,7 +2663,7 @@
     {
       "name":"Etapa: 11",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Barbrusa ",
@@ -2930,7 +2930,7 @@
     {
       "name":"Etapa: 12",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Zumbobo",
@@ -3197,7 +3197,7 @@
     {
       "name":"Etapa: 13",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Ranúfar",
@@ -3464,7 +3464,7 @@
     {
       "name":"Etapa: 14",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abrajidor oscuro ",
@@ -3705,7 +3705,7 @@
     {
       "name":"Etapa: 15",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abrajidor Claro ",
@@ -3972,7 +3972,7 @@
     {
       "name":"Etapa: 16",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Kaonashi",
@@ -4005,7 +4005,7 @@
     {
       "name":"Etapa: 17",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Blop Coco Real",
@@ -4272,7 +4272,7 @@
     {
       "name":"Etapa: 18",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abráknido Ancestral",
@@ -4539,7 +4539,7 @@
     {
       "name":"Etapa: 19",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Bworker",
@@ -4689,7 +4689,7 @@
     {
       "name":"Etapa: 20",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Araknekros- el Salvaje",
@@ -4956,7 +4956,7 @@
     {
       "name":"Etapa: 21",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Bandiras- el zorro del clan Los Malague?os",
@@ -5223,7 +5223,7 @@
     {
       "name":"Etapa: 22",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Biblidiana- la Controvertida",
@@ -5490,7 +5490,7 @@
     {
       "name":"Etapa: 23",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Bambudín- el Azteca",
@@ -5757,7 +5757,7 @@
     {
       "name":"Etapa: 24",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abrakíledo- el Patas Ligeras",
@@ -6024,7 +6024,7 @@
     {
       "name":"Etapa: 25",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abrákneo- el Elegido",
@@ -6291,7 +6291,7 @@
     {
       "name":"Etapa: 26",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abubanero- el Naranja",
@@ -6558,7 +6558,7 @@
     {
       "name":"Etapa: 27",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abrakadabra- el Pata de Kabra",
@@ -6825,7 +6825,7 @@
     {
       "name":"Etapa: 28",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Akujune el Capado",
@@ -7092,7 +7092,7 @@
     {
       "name":"Etapa: 29",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Barbrétzel- el Salado",
@@ -7359,7 +7359,7 @@
     {
       "name":"Etapa: 30",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Crujíbaro- el Tzantza",
@@ -7626,7 +7626,7 @@
     {
       "name":"Etapa: 31",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abrakeponerse- el Optimista",
@@ -7893,7 +7893,7 @@
     {
       "name":"Etapa: 32",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abrajinieves- el Enanito",
@@ -8160,7 +8160,7 @@
     {
       "name":"Etapa: 33",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Abroesidor- el Navegante",
@@ -8427,7 +8427,7 @@
     {
       "name":"Etapa: 34",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Tsumani el Inundador",
@@ -8512,7 +8512,7 @@
     {
       "name":"Etapa: 35",
       "complete":false,
-      "details":"0% completado",
+      "details":"0/20",
       "steps":[
         {
           "name":"Kralamar Gigante",

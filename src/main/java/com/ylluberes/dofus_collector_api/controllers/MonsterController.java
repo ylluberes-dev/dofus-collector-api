@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/dofus-collector/api/v1/monster")
 public class MonsterController {
@@ -22,7 +24,7 @@ public class MonsterController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<GenericResponse> export(@RequestBody InMonsterExport inMonsterExport) {
+    public ResponseEntity<GenericResponse> export(@Valid @RequestBody InMonsterExport inMonsterExport) {
         GenericResponse response = monsterService.export(inMonsterExport);
         return new ResponseEntity<>(response, response.getServerStatus());
     }

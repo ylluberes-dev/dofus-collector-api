@@ -27,7 +27,7 @@ public class MonsterServiceImpl implements MonsterService {
         User user;
         GenericResponse response = new GenericResponse();
         boolean found = false;
-       // int totalCaptured = 0;
+        // int totalCaptured = 0;
         try {
             user = userService.findById(inMonsterUpdate.getUserId()).getData();
             if (user != null) {
@@ -36,7 +36,6 @@ public class MonsterServiceImpl implements MonsterService {
                     Mission mission = game.getMission();
                     for (Stage stage : mission.getStages()) {
                         for (Monster monster : stage.getSteps()) {
-                           // if (monster.isCaptured()) totalCaptured++;
                             if (monster.get_id().equals(inMonsterUpdate.getMonsterId())) {
                                 found = true;
                                 boolean status = monster.isCaptured();
@@ -55,8 +54,7 @@ public class MonsterServiceImpl implements MonsterService {
                                         }
                                         break;
                                 }
-                               /* stage.setDetails((totalCaptured / stage.getSteps().size()) * 100 + "%");
-                                if("100%".equals(stage.getDetails())) stage.setComplete(true);*/
+                                stage.updateStageDetails();
                                 userService.saveOrUpdate(user);
                                 response.setMessage("Monster updated successfully");
                                 response.setSuccess(true);
@@ -92,53 +90,46 @@ public class MonsterServiceImpl implements MonsterService {
     @Override
     public GenericResponse<List<OutMonsterExport>> export(InMonsterExport inMonsterExport) {
         GenericResponse<List<OutMonsterExport>> response = new GenericResponse<>();
-        if (inMonsterExport.getGreaterThan() < 0) {
-            response.setMessage("greaterThan param should be positive");
-            response.setSuccess(false);
-            response.setServerStatus(HttpStatus.BAD_REQUEST);
-            response.setData(null);
-        } else {
-            User user;
-            List<OutMonsterExport> outMonsterExportList = new ArrayList<>();
-            try {
-                user = userService.findById(inMonsterExport.getUserId()).getData();
-                if (user != null) {
-                    Game game = user.getGame();
-                    if (game != null) {
-                        Mission mission = game.getMission();
-                        if (mission != null) {
-                            for (Stage stage : mission.getStages()) {
-                                List<Monster> candidates = stage
-                                        .getSteps()
-                                        .stream()
-                                        .filter(x -> x.getTimesCaptured() > inMonsterExport.getGreaterThan())
-                                        .collect(Collectors.toList());
-                                if (candidates.size() > 0) {
-                                    for (Monster monster : candidates) {
-                                        outMonsterExportList.add(new OutMonsterExport(monster.getName(),
-                                                monster.getTimesCaptured(),
-                                                monster.isArchMonster()));
-                                    }
+        User user;
+        List<OutMonsterExport> outMonsterExportList = new ArrayList<>();
+        try {
+            user = userService.findById(inMonsterExport.getUserId()).getData();
+            if (user != null) {
+                Game game = user.getGame();
+                if (game != null) {
+                    Mission mission = game.getMission();
+                    if (mission != null) {
+                        for (Stage stage : mission.getStages()) {
+                            List<Monster> candidates = stage
+                                    .getSteps()
+                                    .stream()
+                                    .filter(x -> x.getTimesCaptured() > inMonsterExport.getGreaterThan())
+                                    .collect(Collectors.toList());
+                            if (candidates.size() > 0) {
+                                for (Monster monster : candidates) {
+                                    outMonsterExportList.add(new OutMonsterExport(monster.getName(),
+                                            monster.getTimesCaptured(),
+                                            monster.isArchMonster()));
                                 }
                             }
-                            response.setMessage(outMonsterExportList.size() > 0 ? "Repeated monsters" : "Any of your monster is greater than " + inMonsterExport.getGreaterThan());
-                            response.setSuccess(true);
-                            response.setData(outMonsterExportList);
-                            response.setServerStatus(HttpStatus.OK);
                         }
+                        response.setMessage(outMonsterExportList.size() > 0 ? "Repeated monsters" : "No monster greater than " + inMonsterExport.getGreaterThan());
+                        response.setSuccess(true);
+                        response.setData(outMonsterExportList);
+                        response.setServerStatus(HttpStatus.OK);
                     }
-                } else {
-                    response.setMessage("The user does not exists");
-                    response.setSuccess(false);
-                    response.setData(null);
-                    response.setServerStatus(HttpStatus.NOT_FOUND);
                 }
-            } catch (Exception e) {
-                response.setMessage("Unexpected error");
+            } else {
+                response.setMessage("The user does not exists");
                 response.setSuccess(false);
                 response.setData(null);
-                response.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                response.setServerStatus(HttpStatus.NOT_FOUND);
             }
+        } catch (Exception e) {
+            response.setMessage("Unexpected error");
+            response.setSuccess(false);
+            response.setData(null);
+            response.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return response;
     }
