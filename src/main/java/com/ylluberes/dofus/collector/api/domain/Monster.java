@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ylluberes.dofus.collector.api.util.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class Monster {
 
     private String _id = UUID.randomUUID().toString();
@@ -28,10 +30,6 @@ public class Monster {
     private String zone;
     private String subZone;
     private int stage;
-
-    public Monster () {
-
-    }
 
     @Override
     public String toString() {

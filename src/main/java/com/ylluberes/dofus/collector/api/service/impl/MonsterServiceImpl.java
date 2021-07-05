@@ -5,7 +5,6 @@ import com.ylluberes.dofus.collector.api.dto.request.InMonsterExport;
 import com.ylluberes.dofus.collector.api.dto.request.InMonsterUpdate;
 import com.ylluberes.dofus.collector.api.dto.responses.GenericResponse;
 import com.ylluberes.dofus.collector.api.service.UserService;
-import com.ylluberes.dofus_collector_api.domain.*;
 import com.ylluberes.dofus.collector.api.dto.responses.OutMonsterExport;
 import com.ylluberes.dofus.collector.api.service.MonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,6 @@ public class MonsterServiceImpl implements MonsterService {
         User user;
         GenericResponse response = new GenericResponse();
         boolean found = false;
-        // int totalCaptured = 0;
         try {
             user = userService.findById(inMonsterUpdate.getUserId()).getData();
             if (user != null) {
