@@ -7,7 +7,7 @@ import com.ylluberes.dofus.collector.api.dto.responses.GenericResponse;
 import com.ylluberes.dofus.collector.api.service.UserService;
 import com.ylluberes.dofus.collector.api.dto.responses.OutMonsterExport;
 import com.ylluberes.dofus.collector.api.service.MonsterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 
 
 @Service
+@AllArgsConstructor
 public class MonsterServiceImpl implements MonsterService {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @Override
     public GenericResponse<Monster> update(InMonsterUpdate inMonsterUpdate) {

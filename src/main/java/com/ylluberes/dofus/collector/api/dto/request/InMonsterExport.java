@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -16,6 +17,7 @@ public class InMonsterExport implements Serializable {
     private final int greaterThan;
 
     @NotNull(message = "userId param should not be null")
+    @NotBlank(message = "userId should not be null")
     private final String userId;
 
 }

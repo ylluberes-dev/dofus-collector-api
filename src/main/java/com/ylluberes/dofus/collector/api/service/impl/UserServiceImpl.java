@@ -7,17 +7,18 @@ import com.ylluberes.dofus.collector.api.domain.User;
 import com.ylluberes.dofus.collector.api.dto.responses.GenericResponse;
 import com.ylluberes.dofus.collector.api.loaders.MissionLoader;
 import com.ylluberes.dofus.collector.api.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserDao userDao;
+    private final UserDao userDao;
+
 
     @Override
     public GenericResponse<User> saveOrUpdate(User user) {
