@@ -4,11 +4,17 @@ package com.ylluberes.dofus.collector.api;
 import com.ylluberes.dofus.collector.api.domain.Game;
 import com.ylluberes.dofus.collector.api.domain.Mission;
 import com.ylluberes.dofus.collector.api.domain.User;
+import com.ylluberes.dofus.collector.api.jwt.JwtProvider;
 import com.ylluberes.dofus.collector.api.loaders.MissionLoader;
 import com.ylluberes.dofus.collector.api.dao.UserDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -22,6 +28,12 @@ class AppTest {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private JwtProvider jwtProvider;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Test
     public void testFindAllUsers() {
@@ -72,5 +84,18 @@ class AppTest {
     }
 
 
+    @Test
+    public void testFindUserByUsername () {
+        User user = userDao.findByUsername("Yasser").orElseThrow(() -> new UsernameNotFoundException(": ("));
+        System.out.println();
+    }
 
+    @Test
+    public void generateToken () {
+        Authentication authenticate =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("mockuser","mockpassword"));
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        //To check if user is log then check Authentication object
+        String token = jwtProvider.generateToken(authenticate);
+        System.out.println("");
+    }
 }

@@ -4,11 +4,19 @@ import com.ylluberes.dofus.collector.api.dao.UserDao;
 import com.ylluberes.dofus.collector.api.domain.Game;
 import com.ylluberes.dofus.collector.api.domain.Mission;
 import com.ylluberes.dofus.collector.api.domain.User;
+import com.ylluberes.dofus.collector.api.dto.request.InAuthLogin;
 import com.ylluberes.dofus.collector.api.dto.responses.GenericResponse;
+import com.ylluberes.dofus.collector.api.dto.responses.OutLoginResponse;
+import com.ylluberes.dofus.collector.api.jwt.JwtProvider;
 import com.ylluberes.dofus.collector.api.loaders.MissionLoader;
 import com.ylluberes.dofus.collector.api.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +26,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
 
 
     @Override
@@ -33,10 +43,21 @@ public class UserServiceImpl implements UserService {
             genericResponse.setServerStatus(HttpStatus.OK);
 
         } catch (Exception ex) {
+            String exceptionMessage = ex.getMessage();
+            String errMessage = "";
+            boolean duplicatedKeyErr = false;
             genericResponse.setData(null);
             genericResponse.setSuccess(false);
-            genericResponse.setMessage("Unexpected error occurred during save or update user " + ex.getMessage());
-            genericResponse.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            if (exceptionMessage.contains("duplicate key")) {
+                errMessage = exceptionMessage.contains("email")
+                        ? "Email already exists, try other"
+                        : exceptionMessage.contains("username")
+                        ? "Username already exists, try other"
+                        : "Unexpected error occurred trying to create a new user";
+                duplicatedKeyErr = true;
+            }
+            genericResponse.setMessage(errMessage);
+            genericResponse.setServerStatus(duplicatedKeyErr ? HttpStatus.BAD_REQUEST : HttpStatus.INTERNAL_SERVER_ERROR); // ? change this ?
             return genericResponse;
         }
         return genericResponse;
@@ -124,6 +145,29 @@ public class UserServiceImpl implements UserService {
             response.setSuccess(false);
             response.setMessage("Unexpected error trying to attach mission");
             response.setServerStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return response;
+    }
+
+    @Override
+    public GenericResponse<OutLoginResponse> login(InAuthLogin inAuthLogin) {
+        GenericResponse response = new GenericResponse();
+        try {
+            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(inAuthLogin.getUserName(), inAuthLogin.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
+            //To check if user is log then check Authentication object
+            String token = jwtProvider.generateToken(authenticate);
+
+            response.setMessage("Login successfully");
+            response.setSuccess(true);
+            response.setData(new OutLoginResponse(token, inAuthLogin.getUserName()));
+            response.setServerStatus(HttpStatus.OK);
+        } catch (BadCredentialsException ex) {
+
+            response.setMessage("Username or password incorrect");
+            response.setSuccess(false);
+            response.setData(null);
+            response.setServerStatus(HttpStatus.UNAUTHORIZED);
         }
         return response;
     }

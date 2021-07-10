@@ -37,11 +37,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", status.value());
+        Map<String, Map<String,String>> body = new LinkedHashMap<>();
         Map<String, String> propertyErrorPair = new LinkedHashMap<>();
-        //Finding custom errors
+        //Finding custom errors (level class)
         ex.getAllErrors().forEach(error -> {
             switch (error.getCode()) {
                 case PASSWORD_CONFIRM_CONSTRAINT:
